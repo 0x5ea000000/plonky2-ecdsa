@@ -1,6 +1,6 @@
-use alloc::vec;
-use alloc::vec::Vec;
+use alloc::{string::String, vec, vec::Vec};
 use core::marker::PhantomData;
+use plonky2::util::serialization::IoResult;
 
 use num::{BigUint, Integer, Zero};
 use plonky2::field::extension::Extendable;
@@ -322,7 +322,7 @@ struct BigUintDivRemGenerator<F: RichField + Extendable<D>, const D: usize> {
     _phantom: PhantomData<F>,
 }
 
-impl<F: RichField + Extendable<D>, const D: usize> SimpleGenerator<F>
+impl<F: RichField + Extendable<D>, const D: usize> SimpleGenerator<F, D>
     for BigUintDivRemGenerator<F, D>
 {
     fn dependencies(&self) -> Vec<Target> {
@@ -334,13 +334,41 @@ impl<F: RichField + Extendable<D>, const D: usize> SimpleGenerator<F>
             .collect()
     }
 
-    fn run_once(&self, witness: &PartitionWitness<F>, out_buffer: &mut GeneratedValues<F>) {
+    fn run_once(
+        &self,
+        witness: &PartitionWitness<F>,
+        out_buffer: &mut GeneratedValues<F>,
+    ) -> Result<(), anyhow::Error> {
         let a = witness.get_biguint_target(self.a.clone());
         let b = witness.get_biguint_target(self.b.clone());
         let (div, rem) = a.div_rem(&b);
 
         out_buffer.set_biguint_target(&self.div, &div);
         out_buffer.set_biguint_target(&self.rem, &rem);
+
+        Ok(())
+    }
+
+    fn id(&self) -> String {
+        todo!()
+    }
+
+    fn serialize(
+        &self,
+        dst: &mut Vec<u8>,
+        common_data: &plonky2::plonk::circuit_data::CommonCircuitData<F, D>,
+    ) -> IoResult<()> {
+        todo!()
+    }
+
+    fn deserialize(
+        src: &mut plonky2::util::serialization::Buffer,
+        common_data: &plonky2::plonk::circuit_data::CommonCircuitData<F, D>,
+    ) -> IoResult<Self>
+    where
+        Self: Sized,
+    {
+        todo!()
     }
 }
 
