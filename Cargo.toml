@@ -13,7 +13,7 @@ anyhow = { version = "1.0.40", default-features = false }
 itertools = { version = "0.11.0", default-features = false }
 plonky2_maybe_rayon = { version = "1.0.0", default-features = false }
 num = { version = "0.4.0", default-features = false }
-plonky2 = { version = "1.0.2", default-features = false }
+plonky2 = { git = "https://github.com/0x5ea000000/plonky2", default-features = false }
 plonky2_u32 = { git = "https://github.com/0x5ea000000/plonky2-u32", default-features = false }
 serde = { version = "1.0", default-features = false, features = ["derive"] }
 
